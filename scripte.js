@@ -745,108 +745,70 @@ document.addEventListener("DOMContentLoaded", () => {
         ================================================== */
 
         contactForm.addEventListener(
-            "submit",
-            (event) => {
+    "submit",
+    (event) => {
 
-                /*
-                 * Pour l'instant, le formulaire n'envoie
-                 * aucune donnée vers un service externe.
-                 * Cette partie valide simplement la demande
-                 * visuellement.
-                 */
+        /* Vérification des champs */
 
-                event.preventDefault();
+        if (!contactForm.checkValidity()) {
 
+            event.preventDefault();
 
-                if (!contactForm.checkValidity()) {
+            contactForm.reportValidity();
 
-                    contactForm.reportValidity();
+            if (formStatus) {
 
+                formStatus.textContent =
+                    "Vérifiez les informations indiquées.";
 
-                    if (formStatus) {
-
-                        formStatus.textContent =
-                            "Vérifiez les informations indiquées.";
-
-                        formStatus.className =
-                            "form-status error";
-
-                    }
-
-
-                    return;
-
-                }
-
-
-                /* -----------------------------------------
-                   FORMULAIRE VALIDE
-                ----------------------------------------- */
-
-                if (formStatus) {
-
-                    formStatus.textContent =
-                        "Votre demande est bien remplie ✦";
-
-                    formStatus.className =
-                        "form-status success";
-
-                }
-
-
-                const submitButton =
-                    contactForm.querySelector(
-                        'button[type="submit"]'
-                    );
-
-
-                if (!submitButton) {
-                    return;
-                }
-
-
-                const buttonText =
-                    submitButton.querySelector("span");
-
-
-                if (buttonText) {
-
-                    buttonText.textContent =
-                        "Demande préparée ✓";
-
-                }
-
-
-                submitButton.classList.add(
-                    "form-button-success"
-                );
-
-
-                submitButton.disabled = true;
-
-
-                window.setTimeout(() => {
-
-                    if (buttonText) {
-
-                        buttonText.textContent =
-                            "Préparer mon message";
-
-                    }
-
-
-                    submitButton.classList.remove(
-                        "form-button-success"
-                    );
-
-
-                    submitButton.disabled = false;
-
-                }, 2500);
+                formStatus.className =
+                    "form-status error";
 
             }
-        );
 
+            return;
+
+        }
+
+
+        /* Formulaire valide : on laisse FormSubmit envoyer */
+
+        if (formStatus) {
+
+            formStatus.textContent =
+                "Envoi de votre demande…";
+
+            formStatus.className =
+                "form-status success";
+
+        }
+
+
+        const submitButton =
+            contactForm.querySelector(
+                'button[type="submit"]'
+            );
+
+
+        if (submitButton) {
+
+            const buttonText =
+                submitButton.querySelector("span");
+
+
+            if (buttonText) {
+
+                buttonText.textContent =
+                    "Envoi en cours…";
+
+            }
+
+            submitButton.disabled = true;
+
+        }
+
+    }
+);
     }
 
 
